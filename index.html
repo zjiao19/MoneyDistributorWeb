@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  
+    <head>
+        <meta charset="utf-8">
+        <title>Money Distributor</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js">
+        </script>
+    <script>
+
+            let count = 4;
+            let renArr = new Array();
+
+            function dataUpdate(){
+                for(let i = 1; i<=count; i++){
+                    renArr[i] = new Object();
+                    let id = "ren" + i;
+                    renArr[i].name = $(".name." + id).val();
+                    renArr[i].money = parseFloat($(".money." + id).val());
+                    renArr[i].weight = parseFloat($(".weight." + id).val());
+                }
+                dataPrint();
+
+            }
+
+            function dataPrint(){
+                let content = "";
+                
+                let sum = 0.0;
+                for(let i = 1; i<=count; i++){
+                    sum += renArr[i].money;
+                }
+                content += "总共花了$" + sum +"\n"
+
+                let wei = 0.0;
+                for(let i = 1; i<=count; i++){
+                    wei += renArr[i].weight;
+                }
+                mpp = sum / wei;
+                mpp = mpp;
+                content += "每份是$" + mpp.toFixed(2) +"\n\n";
+
+                for(let i = 1; i<=count; i++){
+                    content += renArr[i].name +": $ " + (renArr[i].money - renArr[i].weight * mpp).toFixed(2) + "\n";
+                }
+
+
+                document.getElementById('result').innerText = content;
+                
+            }
+
+            $(document).ready(function(){
+                $("#add").click(appendRen);
+                $("#delete").click(deleteRen);
+                $("#reload").click(dataUpdate);
+                $("input").focus(function(){$(this).select();});
+                $("input").change(dataUpdate);
+            });
+
+
+
+
+            function appendRen(){
+                count++;
+                let id = "ren" + count;
+                let code = " <fieldset class=\"" + id + "\"><legend class=\"" + id + "\"><input class = \"name " + id + "\" "
+                            +"type=\"text\" value=\"第" + count + "人\"></legend><div class=\"form-group\">$<input class=\"money "
+                            + id + "\" type=\"number\" value=\"0\" required><br/>*<input class=\"weight "+ id +"\" type=\"number\" "
+                            +"value=\"1\" placeholder=\"Weight\" required></div></fieldset>";
+                $("fieldset.ren" + (count-1)).after(code);
+                $("#result").text("添加成功！");
+                $("input").focus(function(){$(this).select();});
+                $("input").change(dataUpdate);
+            }
+
+            function deleteRen(){
+                if(count > 1){
+                    $("fieldset.ren"+count).remove();
+                    count--;
+                    $("#result").text("删除成功！");
+                }else{
+                    $("#result").text("只剩一个人啦！");
+                }
+            }
+
+
+        </script>
+        <style>
+        .container{
+            width: 50%;
+            position:absolute;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+        fieldset{
+            font-size: 20px;
+        }
+        input{
+            font-size: 20px;
+        }
+        @media only screen and (max-width: 1080px) {
+        .container{
+            width: 90%;
+            position:absolute;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        html{
+            font-size: 40px;
+        }
+        input{
+            font-size: 40px;
+        }
+}
+        </style>
+    </head>
+
+
+    <body>
+        <div class="container">
+            <div class="form-group">
+                <form>
+                        <h2>Money Distributor<br/><small>麦克科尔米克大街2120号720公社的每月财产分配</small></h2>
+                    
+                    <fieldset class="ren1">
+                        <legend class="ren1">
+                            <input class = "name ren1" type="text" value="A房房主张酷频">
+                        </legend>
+                        <div class="form-group">
+                            $<input class="money ren1" type="number" value="0" required><br/>
+                            *<input class="weight ren1" type="number" value="1" placeholder="Weight" required>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ren2">
+                        <legend class="ren2">
+                            <input class = "name ren2" type="text" value="B房房主aw(s)l">
+                        </legend>
+                        <div class="form-group">
+                            $<input class="money ren2" type="number" value="0" required><br/>
+                            *<input class="weight ren2" type="number" value="1" placeholder="Weight" required>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ren3">
+                        <legend class="ren3">
+                            <input class = "name ren3" type="text" value="C房房主焦子腾nb">
+                        </legend>
+                        <div class="form-group">
+                            $<input class="money ren3" type="number" value="0" required><br/>
+                            *<input class="weight ren3" type="number" value="1" placeholder="Weight" required>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="ren4">
+                        <legend class="ren4">
+                            <input class = "name ren4" type="text" value="D房房主喜奔三">
+                        </legend>
+                        <div class="form-group">
+                            $<input class="money ren4" type="number" value="0" required><br/>
+                            *<input class="weight ren4" type="number" value="1" placeholder="Weight" required>
+                        </div>
+                    </fieldset>
+                    
+                    
+                    <fieldset>
+                        <legend>
+                            <p>Result</p>
+                            </legend>  
+                        <p id="result">在吗什么时候还钱</p>
+                    </fieldset>
+                    <br/>
+                    <input type="button" id="add" value="添加">
+                    <input type="button" id="delete" value="删除">
+                    <input type="button" id="reload" value="刷新数据">
+                    
+
+                    
+                </form>
+                <br/><br/>
+            </div>
+        </div>
+        
+
+    </body>
+</html>
